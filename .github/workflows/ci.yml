@@ -56,17 +56,20 @@ jobs:
     - name: Run Acceptance Tests (Cucumber)
       run: pnpm --filter . at
 
-    # 10. PASO INTERMEDIO DE RESCATE: Mover el build a la raíz real
-    - name: Prepare build artifacts for deployment
+    # 10. PASO INTERMEDIO DE RESCATE: Rastrear la carpeta dist real
+    - name: Locate build artifacts
       run: |
-        echo "=== Moviendo dist desde el subproyecto hacia la raíz ==="
-        mv TP-agilesG1/dist ./dist
-      continue-on-error: false
+        echo "=== ¿DÓNDE CARAJO ESTÁ LA CARPETA DIST? ==="
+        find . -type d -name "dist"
+        echo "=== DUPLICANDO CARPETA AL DIRECTORIO SEGURO ==="
+        mkdir -p ./dist
+        cp -r $(find . -type d -name "dist" | head -n 1)/* ./dist/ || true
+      continue-on-error: true
 
     # 11. ETAPA 6: Deploy Automático a GitHub Pages
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: dist # 🎯 Ahora sí va a estar acá de forma física y real
+        folder: dist
         branch: gh-pages
