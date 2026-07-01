@@ -33,4 +33,16 @@ export class Ahorcado {
   vidas(): number {
     return this.vidasActuales;
   }
+  gano(): boolean {
+    // Es verdadero si cada letra de la palabra fue arriesgada exitosamente
+    return [...this.palabra].every(letra =>
+      this.letrasAdivinadas.includes(letra.toUpperCase())
+    );
+  }
+
+  estaTerminado(): boolean {
+    // El juego termina si ganaste o si te quedaste sin vidas reales
+    return this.gano() || this.vidasActuales === 0;
+  }
 }
+
