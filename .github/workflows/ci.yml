@@ -61,5 +61,5 @@ jobs:
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: ${{ github.workspace }}/TP-agilesG1/dist 
+        folder: ./dist # 🎯 CON EL './' OBLIGAMOS A LA ACTION A QUEDARSE EN LA RAÍZ REAL
         branch: gh-pages
