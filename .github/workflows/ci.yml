@@ -23,32 +23,27 @@ jobs:
       with:
         node-version: '22.x'
 
-    # 3. Configurar pnpm de forma limpia (Sin run_install automático)
+    # 3. Configurar pnpm de forma limpia
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
       with:
         version: 9
 
-    # 4. Instalar dependencias del proyecto de forma manual en el directorio
+    # 4. Instalar dependencias en la raíz
     - name: Install dependencies
       run: pnpm install
-      working-directory: ./TP-agilesG1
 
     # 5. ETAPA 1: Compilar el proyecto
     - name: Compile / Build
       run: pnpm build
-      working-directory: ./TP-agilesG1
 
     # 6. ETAPA 2 y 3: Unit Tests y Reporte de Cobertura
     - name: Run Unit Tests & Coverage (Vitest)
       run: pnpm test -- --run
-      working-directory: ./TP-agilesG1
 
     # 7. ETAPA 4: Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
-      with:
-        projectBaseDir: ./TP-agilesG1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -56,17 +51,15 @@ jobs:
     # 8. Descargar los navegadores para Playwright/Cucumber
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps chromium
-      working-directory: ./TP-agilesG1
 
     # 9. ETAPA 5: Acceptance Tests (Cucumber)
     - name: Run Acceptance Tests (Cucumber)
       run: pnpm at
-      working-directory: ./TP-agilesG1
 
     # 10. ETAPA 6: Deploy Automático a GitHub Pages
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: TP-agilesG1/dist
+        folder: dist
         branch: gh-pages
