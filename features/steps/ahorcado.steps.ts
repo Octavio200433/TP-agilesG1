@@ -26,3 +26,8 @@ When("el jugador adivina la letra {string}", async ({ page }, letra: string) => 
   await input.fill(letra);
   await input.press("Enter");
 });
+
+Then("se ve el mensaje {string}", async ({ page }, mensaje: string) => {
+  // Buscaremos un elemento en la pantalla con el id de test "status"
+  await expect(page.getByTestId("status")).toHaveText(mensaje);
+});
