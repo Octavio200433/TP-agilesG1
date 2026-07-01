@@ -29,22 +29,29 @@ jobs:
       with:
         version: 9
 
-    # 4. Instalar dependencias apuntando al filtro del subproyecto
+    # 4. Forzar eliminación de configuraciones conflictivas en el servidor
+    - name: Clean runner environment
+      run: |
+        rm -f pnpm-workspace.yaml
+        rm -f ../pnpm-workspace.yaml
+      continue-on-error: true
+
+    # 5. Instalar dependencias en el subdirectorio real
     - name: Install dependencies
-      run: pnpm --filter . install --no-frozen-lockfile
+      run: pnpm install --no-frozen-lockfile
       working-directory: ./TP-agilesG1
 
-    # 5. ETAPA 1: Compilar el proyecto
+    # 6. ETAPA 1: Compilar el proyecto
     - name: Compile / Build
       run: pnpm build
       working-directory: ./TP-agilesG1
 
-    # 6. ETAPA 2 y 3: Unit Tests y Reporte de Cobertura
+    # 7. ETAPA 2 y 3: Unit Tests y Reporte de Cobertura
     - name: Run Unit Tests & Coverage (Vitest)
       run: pnpm test -- --run
       working-directory: ./TP-agilesG1
 
-    # 7. ETAPA 4: Análisis Estático (SonarQube Cloud)
+    # 8. ETAPA 4: Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
       with:
@@ -53,17 +60,17 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-    # 8. Descargar los navegadores para Playwright/Cucumber
+    # 9. Descargar los navegadores para Playwright/Cucumber
     - name: Install Playwright Browsers
       run: pnpm exec playwright install --with-deps chromium
       working-directory: ./TP-agilesG1
 
-    # 9. ETAPA 5: Acceptance Tests (Cucumber)
+    # 10. ETAPA 5: Acceptance Tests (Cucumber)
     - name: Run Acceptance Tests (Cucumber)
       run: pnpm at
       working-directory: ./TP-agilesG1
 
-    # 10. ETAPA 6: Deploy Automático a GitHub Pages
+    # 11. ETAPA 6: Deploy Automático a GitHub Pages
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main' && success()
       uses: JamesIves/github-pages-deploy-action@v4
