@@ -46,3 +46,22 @@ describe("Ahorcado - Estado Ganado", () => {
     expect(juego.gano()).toBe(false);
   });
 });
+describe("Ahorcado - Perder", () => {
+  it("el juego está perdido cuando las vidas llegan a 0", () => {
+    const juego = new Ahorcado("GATO");
+    // Forzamos los 6 fallos para que se quede sin vidas
+    ["Z", "X", "C", "V", "B", "N"].forEach(letra => juego.adivinar(letra));
+    expect(juego.estaPerdido()).toBe(true);
+  });
+
+  it("el juego no está perdido mientras queden vidas > 0", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("Z");
+    expect(juego.estaPerdido()).toBe(false);
+  });
+
+  it("al perder, se puede consultar la palabra completa para mostrarla", () => {
+    const juego = new Ahorcado("GATO");
+    expect(juego.palabraSecreta()).toBe("GATO");
+  });
+});
