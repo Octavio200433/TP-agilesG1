@@ -32,3 +32,7 @@ Then("se ve el mensaje {string}", async ({ page }, mensaje: string) => {
   await expect(page.getByTestId("status")).toHaveText(mensaje);
 });
 
+Then("se ve el mensaje de advertencia {string}", async ({ page }, mensaje: string) => {
+  // Buscaremos un elemento con data-testid="warning"
+  await expect(page.getByTestId("warning")).toHaveText(mensaje);
+});
