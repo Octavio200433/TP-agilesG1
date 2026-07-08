@@ -1,9 +1,0 @@
-(function(){let e=document.createElement(`link`).relList;if(e&&e.supports&&e.supports(`modulepreload`))return;for(let e of document.querySelectorAll(`link[rel="modulepreload"]`))n(e);new MutationObserver(e=>{for(let t of e)if(t.type===`childList`)for(let e of t.addedNodes)e.tagName===`LINK`&&e.rel===`modulepreload`&&n(e)}).observe(document,{childList:!0,subtree:!0});function t(e){let t={};return e.integrity&&(t.integrity=e.integrity),e.referrerPolicy&&(t.referrerPolicy=e.referrerPolicy),e.crossOrigin===`use-credentials`?t.credentials=`include`:e.crossOrigin===`anonymous`?t.credentials=`omit`:t.credentials=`same-origin`,t}function n(e){if(e.ep)return;e.ep=!0;let n=t(e);fetch(e.href,n)}})();var e=class{palabra;letrasAdivinadas=[];vidasActuales=6;constructor(e){this.palabra=e}adivinar(e){let t=e.toUpperCase();this.letrasAdivinadas.includes(t)||(this.letrasAdivinadas.push(t),this.palabra.toUpperCase().includes(t)||this.vidasActuales>0&&this.vidasActuales--)}palabraEnmascarada(){return this.palabra.split(``).map(e=>this.letrasAdivinadas.includes(e.toUpperCase())?e:`_`).join(` `)}vidas(){return this.vidasActuales}gano(){return[...this.palabra].every(e=>this.letrasAdivinadas.includes(e.toUpperCase()))}estaTerminado(){return this.gano()||this.vidasActuales===0}};function t(e){let t=document.querySelector(`#app`),n=()=>{t.innerHTML=`
-      <h1>Juego del Ahorcado</h1>
-      <h2 data-testid="word">${e.palabraEnmascarada()}</h2>
-      <p>Vidas: <span data-testid="lives">${e.vidas()}</span></p>
-      
-      ${e.gano()?`<div data-testid="status">GANASTE</div>`:``}
-      
-      ${e.estaTerminado()?``:`<input type="text" id="letra-input" maxlength="1" placeholder="Letra" autofocus />`}
-    `;let r=document.querySelector(`#letra-input`);r&&(r.focus(),r.addEventListener(`keydown`,t=>{t.key===`Enter`&&r.value&&(e.adivinar(r.value),n())}))};n()}t(new e(new URLSearchParams(window.location.search).get(`word`)||`GATO`));
