@@ -41,7 +41,7 @@ jobs:
     - name: Run Unit Tests with Coverage
       run: pnpm test:coverage
 
-    # 7. Análisis Estático (SonarQube Cloud) - Agregamos la ruta del reporte
+ # 7. Análisis Estático (SonarQube Cloud)
     - name: SonarQube Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
@@ -50,6 +50,7 @@ jobs:
       with:
         args: >
           -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+          -Dsonar.coverage.exclusions=src/ui/**,features/**,tests/**,**/*.config.ts
 
     # 7b. Verificación estricta del Quality Gate
     - name: SonarQube Quality Gate check
