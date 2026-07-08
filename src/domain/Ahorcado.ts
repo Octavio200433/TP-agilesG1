@@ -44,5 +44,13 @@ export class Ahorcado {
     // El juego termina si ganaste o si te quedaste sin vidas reales
     return this.gano() || this.vidasActuales === 0;
   }
+
+  estaPerdido(): boolean {
+    return this.vidasActuales === 0;
+  }
+
+  palabraSecreta(): string {
+    return this.palabra;
+  }
 }
 
