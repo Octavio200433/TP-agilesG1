@@ -52,6 +52,6 @@ export function mountApp(juego: Ahorcado) {
     }
   };
 
-  // Ejecutamos el renderizado inicial de la interfaz
+  // Ejecutamos el renderizado inicial de la interfaz 
   render();
 }
