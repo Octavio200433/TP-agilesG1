@@ -65,3 +65,26 @@ describe("Ahorcado - Perder", () => {
     expect(juego.palabraSecreta()).toBe("GATO");
   });
 });
+
+describe("Ahorcado - Letras Repetidas", () => {
+  it("no debe descontar vidas si se repite una letra acertada", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("A"); // Vidas: 6
+    juego.adivinar("A");
+    expect(juego.vidas()).toBe(6);
+  });
+
+  it("no debe descontar una segunda vida si se repite una letra fallada", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("E"); // Letra incorrecta -> Vidas: 5
+    juego.adivinar("E"); // Repetida
+    expect(juego.vidas()).toBe(5);
+  });
+
+  it("debe informar si una letra ya fue intentada", () => {
+    const juego = new Ahorcado("GATO");
+    juego.adivinar("G");
+    expect(juego.esLetraRepetida("G")).toBe(true);
+    expect(juego.esLetraRepetida("Z")).toBe(false);
+  });
+});
