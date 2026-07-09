@@ -6,7 +6,7 @@
 
 # Test info
 
-- Name: features\entrada-invalida.feature.spec.js >> AT 7 — Entrada inválida >> Ingresar un carácter que no es letra es rechazado y no afecta el estado
+- Name: features\entrada-invalida.feature.spec.js >> AT 7 — Entrada inválida >> Caso A - Ingresar un carácter que no es letra es rechazado (Red 1)
 - Location: .features-gen\features\entrada-invalida.feature.spec.js:6:7
 
 # Error details
@@ -14,21 +14,21 @@
 ```
 Error: expect(locator).toHaveText(expected) failed
 
-Locator:  getByTestId('word')
-Expected: "____"
-Received: "_ _ _ _"
+Locator:  getByTestId('lives')
+Expected: "6"
+Received: "5"
 Timeout:  5000ms
 
 Call log:
   - Expect "toHaveText" with timeout 5000ms
-  - waiting for getByTestId('word')
-    14 × locator resolved to <h2 data-testid="word">_ _ _ _</h2>
-       - unexpected value "_ _ _ _"
+  - waiting for getByTestId('lives')
+    13 × locator resolved to <span data-testid="lives">5</span>
+       - unexpected value "5"
 
 ```
 
 ```yaml
-- heading "_ _ _ _" [level=2]
+- text: "5"
 ```
 
 # Test source
@@ -48,14 +48,14 @@ Call log:
   12 | // Esta función traduce el "Entonces se ve la palabra..."
   13 | // Busca en la pantalla un elemento que tenga el identificador "word" y mira si tiene los guiones.
   14 | Then("se ve la palabra {string}", async ({ page }, esperada: string) => {
-> 15 |   await expect(page.getByTestId("word")).toHaveText(esperada);
-     |                                          ^ Error: expect(locator).toHaveText(expected) failed
+  15 |   await expect(page.getByTestId("word")).toHaveText(esperada);
   16 | });
   17 | 
   18 | // Esta función traduce el "Y se ven X vidas"
   19 | // Busca un elemento con el identificador "lives" y verifica que tenga el número de vidas correcto.
   20 | Then("se ven {int} vidas", async ({ page }, vidas: number) => {
-  21 |   await expect(page.getByTestId("lives")).toHaveText(String(vidas));
+> 21 |   await expect(page.getByTestId("lives")).toHaveText(String(vidas));
+     |                                           ^ Error: expect(locator).toHaveText(expected) failed
   22 | });
   23 | 
   24 | When("el jugador adivina la letra {string}", async ({ page }, letra: string) => {
