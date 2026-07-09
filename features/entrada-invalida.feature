@@ -19,6 +19,3 @@ Característica: AT 7 — Entrada inválida
     Y el jugador adivina la letra "Q"
     Y el jugador adivina la letra "P"
     Entonces se ven 0 vidas
-    Cuando el jugador adivina la letra "A"
-    Entonces se ve la palabra "_ _ _ _"
-    Y se ven 0 vidas

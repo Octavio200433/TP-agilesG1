@@ -21,6 +21,7 @@ export function mountApp(juego: Ahorcado) {
     const partidaTerminada = juego.estaTerminado();
 
     // 2. Inyectamos en el HTML del contenedor de la aplicación
+    // 🎯 CAMBIO AT7: Sacamos maxlength="1" para permitir que se testeen strings largos
     app.innerHTML = `
       <h1>Juego del Ahorcado</h1>
       <h2 data-testid="word">${palabraMostrar}</h2>
@@ -28,8 +29,8 @@ export function mountApp(juego: Ahorcado) {
       
       ${mensajeAlerta ? `<div data-testid="warning" style="color: red; font-weight: bold; margin-bottom: 10px;">${mensajeAlerta}</div>` : ""}
       
-      ${cartelStatus} <input type="text" id="letra-input" maxlength="1" placeholder="Letra" 
-             ${partidaTerminada ? 'disabled' : 'autofocus'} />
+      ${cartelStatus} <input type="text" id="letra-input" placeholder="Letra" 
+               ${partidaTerminada ? 'disabled' : 'autofocus'} />
     `;
 
     // 3. Si la partida no terminó, asignamos el escuchador de eventos al input
@@ -41,14 +42,14 @@ export function mountApp(juego: Ahorcado) {
 
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && input.value) {
-          const letra = input.value.toUpperCase(); // Estandarizamos a mayúscula
+          const entrada = input.value; // Ya no estandarizamos acá arriba para no romper cadenas largas ni caracteres raros
 
           // CAPA DE CONTROL (AT6): Chequeamos si la letra ya se había intentado
-          if (juego.esLetraRepetida(letra)) {
+          if (juego.esLetraRepetida(entrada)) {
             mensajeAlerta = "Ya intentaste con esa letra"; // Activamos el mensaje
           } else {
-            mensajeAlerta = ""; // Limpiamos la alerta si es una letra nueva
-            juego.adivinar(letra); // Invoca la lógica del dominio
+            mensajeAlerta = ""; // Limpiamos la alerta si es una entrada nueva
+            juego.adivinar(entrada); // Invoca la lógica del dominio (que ahora filtra todo gracias al AT7)
           }
 
           render(); // Re-renderiza la pantalla con el nuevo estado

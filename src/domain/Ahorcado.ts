@@ -8,6 +8,21 @@ export class Ahorcado {
   }
 
   adivinar(letra: string): void {
+    // 🎯 VALIDACIÓN 1 (AT7): Si el juego ya terminó, no tiene efecto
+    if (this.estaTerminado()) {
+      return;
+    }
+
+    // 🎯 VALIDACIÓN 2 (AT7): Si es una cadena vacía o más de un carácter, se rechaza
+    if (letra.length !== 1) {
+      return;
+    }
+
+    // 🎯 VALIDACIÓN 3 (AT7): Si no es una letra válida (A-Z), se rechaza
+    if (!/^[a-zA-ZñÑ]$/.test(letra)) {
+      return;
+    }
+
     const letraUpper = letra.toUpperCase();
 
     if (this.letrasAdivinadas.includes(letraUpper)) {
@@ -33,15 +48,14 @@ export class Ahorcado {
   vidas(): number {
     return this.vidasActuales;
   }
+
   gano(): boolean {
-    // Es verdadero si cada letra de la palabra fue arriesgada exitosamente
     return [...this.palabra].every(letra =>
       this.letrasAdivinadas.includes(letra.toUpperCase())
     );
   }
 
   estaTerminado(): boolean {
-    // El juego termina si ganaste o si te quedaste sin vidas reales
     return this.gano() || this.vidasActuales === 0;
   }
 
@@ -57,4 +71,3 @@ export class Ahorcado {
     return this.letrasAdivinadas.includes(letra.toUpperCase());
   }
 }
-
