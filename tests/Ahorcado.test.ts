@@ -88,27 +88,36 @@ describe("Ahorcado - Letras Repetidas", () => {
     expect(juego.esLetraRepetida("Z")).toBe(false);
   });
 });
-describe("Ahorcado - Control de letras (AT7)", () => {
-  it("debería registrar las letras ingresadas de forma correcta y controlar la lógica en el dominio", () => {
+
+describe("Ahorcado - Entrada inválida (AT 7)", () => {
+  it("adivinar con un carácter que no es una letra (número, símbolo) es rechazado y no afecta el estado", () => {
     const juego = new Ahorcado("GATO");
+    const vidasIniciales = juego.vidas();
 
-    // Ejecutamos el método adivinar para registrar la letra y asegurar cobertura
-    juego.adivinar("A");
+    juego.adivinar("1");
+    juego.adivinar("$");
 
-    // Verificamos que impactó correctamente en la palabra enmascarada
-    expect(juego.palabraEnmascarada()).contain("A");
+    expect(juego.vidas()).toBe(vidasIniciales);
   });
 
-  // Si implementaron el método esLetraRepetida en el dominio, sumamos su cobertura:
-  it("debería identificar correctamente si una letra ya fue intentada", () => {
+  it("adivinar con una cadena de más de un carácter es rechazado y no afecta el estado", () => {
+    const juego = new Ahorcado("GATO");
+    const vidasIniciales = juego.vidas();
+
+    juego.adivinar("GA");
+
+    expect(juego.vidas()).toBe(vidasIniciales);
+  });
+
+  it("adivinar una letra cuando el juego ya terminó no tiene efecto", () => {
     const juego = new Ahorcado("GATO");
 
-    juego.adivinar("E");
+    // Forzamos los 6 fallos para terminar la partida
+    ["Z", "X", "C", "V", "B", "N"].forEach(letra => juego.adivinar(letra));
+    const vidasAlPerder = juego.vidas();
 
-    // Si el método está en el dominio, este test lo valida y le da 100% de cobertura
-    if (typeof (juego as any).esLetraRepetida === "function") {
-      expect((juego as any).esLetraRepetida("E")).toBe(true);
-      expect((juego as any).esLetraRepetida("X")).toBe(false);
-    }
+    juego.adivinar("A");
+
+    expect(juego.vidas()).toBe(vidasAlPerder);
   });
 });
