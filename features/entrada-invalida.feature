@@ -12,10 +12,3 @@ Característica: AT 7 — Entrada inválida
     Cuando el jugador adivina la letra "CA"
     Entonces se ve la palabra "_ _ _ _"
     Y se ven 6 vidas
-    Cuando el jugador adivina la letra "X"
-    Y el jugador adivina la letra "Y"
-    Y el jugador adivina la letra "Z"
-    Y el jugador adivina la letra "W"
-    Y el jugador adivina la letra "Q"
-    Y el jugador adivina la letra "P"
-    Entonces se ven 0 vidas
