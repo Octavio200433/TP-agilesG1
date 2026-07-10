@@ -36,3 +36,20 @@ Then("se ve el mensaje de advertencia {string}", async ({ page }, mensaje: strin
   // Buscaremos un elemento con data-testid="warning"
   await expect(page.getByTestId("warning")).toHaveText(mensaje);
 });
+
+// --- NUEVOS STEPS PARA EL AT DE PALABRA AL AZAR (CORREGIDOS) ---
+let listaPalabras: string[] = [];
+
+Given("que la lista de palabras contiene {string} y {string}", async function ({ page }, palabra1: string, palabra2: string) {
+  listaPalabras = [palabra1, palabra2];
+});
+
+When("inicio una nueva partida al azar fijando la semilla para que elija la primera opción", async function ({ page }) {
+  // Pasamos la lista de palabras y un parámetro de semilla (seed) por la URL
+  await page.goto(`http://localhost:5173/?words=${listaPalabras.join(",")}&seed=0`);
+});
+
+Then("la palabra oculta debería tener 5 guiones bajos", async function ({ page }) {
+  const wordLocator = page.getByTestId("word");
+  await expect(wordLocator).toHaveText("_____");
+});
