@@ -125,11 +125,11 @@ describe("Ahorcado - Entrada inválida (AT 7)", () => {
 describe("Ahorcado - Palabra al azar (Aprobación Directa)", () => {
   it("debería seleccionar la primera palabra si se le pasa una lista y el índice 0", () => {
     const lista = ["PERRO", "LAVADORA"];
-    // Le pasamos la lista de palabras y fijamos el índice en 0 (nuestro Seam del azar)
     const juego = new Ahorcado(lista, 0);
 
     expect(juego.palabraSecreta()).toBe("PERRO");
-    expect(juego.palabraEnmascarada()).toBe("_____");
+    // Agregamos los espacios correspondientes al formato del dominio
+    expect(juego.palabraEnmascarada()).toBe("_ _ _ _ _");
   });
 
   it("debería seleccionar la segunda palabra si el índice fijado es 1", () => {
