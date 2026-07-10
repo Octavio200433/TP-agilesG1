@@ -121,3 +121,25 @@ describe("Ahorcado - Entrada inválida (AT 7)", () => {
     expect(juego.vidas()).toBe(vidasAlPerder);
   });
 });
+
+describe("Ahorcado - Desafío Acentos y Ñ", () => {
+  it("debe aceptar una letra sin tilde si la palabra secreta tiene la letra con tilde", () => {
+    const juego = new Ahorcado("ÁRBOL");
+    juego.adivinar("A");
+    expect(juego.vidas()).toBe(6);
+    expect(juego.palabraEnmascarada()).toBe("Á _ _ _ _");
+  });
+
+  it("debe reconocer como letra repetida la versión con tilde si ya se ingresó sin tilde", () => {
+    const juego = new Ahorcado("ÁRBOL");
+    juego.adivinar("A");
+    expect(juego.esLetraRepetida("Á")).toBe(true);
+  });
+
+  it("debe procesar correctamente la letra Ñ sin transformarla en N", () => {
+    const juego = new Ahorcado("NIÑO");
+    juego.adivinar("Ñ");
+    expect(juego.vidas()).toBe(6);
+    expect(juego.palabraEnmascarada()).toBe("_ _ Ñ _");
+  });
+});
