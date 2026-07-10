@@ -7,6 +7,18 @@ export class Ahorcado {
     this.palabra = palabra;
   }
 
+  // Función auxiliar para normalizar ignorando tildes pero cuidando la Ñ
+  private normalizarTexto(texto: string): string {
+    const textoUpper = texto.toUpperCase();
+    // Si es una Ñ, no le tocamos nada para evitar transformarla en N
+    if (textoUpper === 'Ñ') return 'Ñ';
+
+    // Separamos los acentos y removemos los diacríticos excepto para la Ñ
+    return textoUpper
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
   adivinar(letra: string): void {
     // 🎯 VALIDACIÓN 1 (AT7): Si el juego ya terminó, no tiene efecto
     if (this.estaTerminado()) {
@@ -18,20 +30,31 @@ export class Ahorcado {
       return;
     }
 
-    // 🎯 VALIDACIÓN 3 (AT7): Si no es una letra válida (A-Z), se rechaza
-    if (!/^[a-zA-ZñÑ]$/.test(letra)) {
+    // 🎯 VALIDACIÓN 3 (AT7): Si no es una letra válida (A-Z, incluyendo acentos y Ñ)
+    // Agregamos soporte opcional en la Regex para letras con tildes comunes de nuestro desafío
+    if (!/^[a-zA-ZñÑáéíóúÁÉÍÓÚüÜ]$/.test(letra)) {
       return;
     }
 
-    const letraUpper = letra.toUpperCase();
+    const letraNormalizada = this.normalizarTexto(letra);
 
-    if (this.letrasAdivinadas.includes(letraUpper)) {
+    // Evitamos duplicados comparando las versiones normalizadas (AT6)
+    const yaFueIntentada = this.letrasAdivinadas.some(
+      l => this.normalizarTexto(l) === letraNormalizada
+    );
+
+    if (yaFueIntentada) {
       return;
     }
 
-    this.letrasAdivinadas.push(letraUpper);
+    this.letrasAdivinadas.push(letra.toUpperCase());
 
-    if (!this.palabra.toUpperCase().includes(letraUpper)) {
+    // Verificamos si la letra ingresada coincide con alguna de la palabra secreta (ambas normalizadas)
+    const existeCoincidencia = [...this.palabra].some(
+      l => this.normalizarTexto(l) === letraNormalizada
+    );
+
+    if (!existeCoincidencia) {
       if (this.vidasActuales > 0) {
         this.vidasActuales--;
       }
@@ -39,9 +62,15 @@ export class Ahorcado {
   }
 
   palabraEnmascarada(): string {
-    return this.palabra
-      .split("")
-      .map(letra => this.letrasAdivinadas.includes(letra.toUpperCase()) ? letra : "_")
+    return [...this.palabra]
+      .map(letra => {
+        const letraNormalizada = this.normalizarTexto(letra);
+        // Revelamos la letra original si su versión normalizada fue adivinada
+        const fueAdivinada = this.letrasAdivinadas.some(
+          l => this.normalizarTexto(l) === letraNormalizada
+        );
+        return fueAdivinada ? letra : "_";
+      })
       .join(" ");
   }
 
@@ -50,9 +79,12 @@ export class Ahorcado {
   }
 
   gano(): boolean {
-    return [...this.palabra].every(letra =>
-      this.letrasAdivinadas.includes(letra.toUpperCase())
-    );
+    return [...this.palabra].every(letra => {
+      const letraNormalizada = this.normalizarTexto(letra);
+      return this.letrasAdivinadas.some(
+        l => this.normalizarTexto(l) === letraNormalizada
+      );
+    });
   }
 
   estaTerminado(): boolean {
@@ -68,6 +100,9 @@ export class Ahorcado {
   }
 
   esLetraRepetida(letra: string): boolean {
-    return this.letrasAdivinadas.includes(letra.toUpperCase());
+    const letraNormalizada = this.normalizarTexto(letra);
+    return this.letrasAdivinadas.some(
+      l => this.normalizarTexto(l) === letraNormalizada
+    );
   }
 }
