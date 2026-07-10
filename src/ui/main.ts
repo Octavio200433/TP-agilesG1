@@ -49,7 +49,7 @@ export function mountApp(juego: Ahorcado) {
             mensajeAlerta = "Ya intentaste con esa letra"; // Activamos el mensaje
           } else {
             mensajeAlerta = ""; // Limpiamos la alerta si es una entrada nueva
-            juego.adivinar(entrada); // Invoca la lógica del dominio (que ahora filtra todo gracias al AT7)
+            juego.adivinar(entrada); // Invoca la lógica del dominio
           }
 
           render(); // Re-renderiza la pantalla con el nuevo estado
