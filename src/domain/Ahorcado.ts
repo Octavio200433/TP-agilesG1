@@ -3,8 +3,18 @@ export class Ahorcado {
   private letrasAdivinadas: string[] = [];
   private vidasActuales: number = 6;
 
-  constructor(palabra: string) {
-    this.palabra = palabra;
+  constructor(palabraOLista: string | string[], indiceFijado?: number) {
+    if (Array.isArray(palabraOLista)) {
+      // Seam para el azar: si pasan un índice controlado (tests) lo usa, sino usa Math.random (producción)
+      const indiceSeleccionado = indiceFijado !== undefined
+        ? indiceFijado
+        : Math.floor(Math.random() * palabraOLista.length); // NOSONAR
+
+      this.palabra = palabraOLista[indiceSeleccionado];
+    } else {
+      // Mantiene compatibilidad absoluta con palabras fijas de los tests anteriores
+      this.palabra = palabraOLista;
+    }
   }
 
   // Función auxiliar para normalizar ignorando tildes pero cuidando la Ñ

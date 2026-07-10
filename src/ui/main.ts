@@ -1,14 +1,28 @@
 // src/ui/main.ts
 import { Ahorcado } from "../domain/Ahorcado";
 
-export function mountApp(juego: Ahorcado) {
+export function mountApp(juegoInicial: Ahorcado) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const wordsParam = urlParams.get("words");
+  const seedParam = urlParams.get("seed");
+
+  // Usamos una variable local 'juego' para no mutar el argumento de la función
+  let juego: Ahorcado = juegoInicial;
+
+  if (wordsParam) {
+    const listaPalabras = wordsParam.split(",");
+    const indiceSemilla = seedParam !== null ? parseInt(seedParam, 10) : undefined;
+    juego = new Ahorcado(listaPalabras, indiceSemilla);
+  }
+
   const app = document.querySelector<HTMLDivElement>('#app')!;
-  let mensajeAlerta = ""; // Estado local de la UI para manejar la advertencia de letra repetida
+  let mensajeAlerta = "";
+
 
   const render = () => {
-    // 1. Decidimos qué palabra mostrar en la pantalla y el estado del juego
     let palabraMostrar = juego.palabraEnmascarada();
     let cartelStatus = '';
+
 
     if (juego.estaPerdido()) {
       palabraMostrar = juego.palabraSecreta(); // Revelamos la palabra completa si perdió (AT5)
@@ -21,7 +35,6 @@ export function mountApp(juego: Ahorcado) {
     const partidaTerminada = juego.estaTerminado();
 
     // 2. Inyectamos en el HTML del contenedor de la aplicación
-    // 🎯 CAMBIO AT7: Sacamos maxlength="1" para permitir que se testeen strings largos
     app.innerHTML = `
       <h1>Juego del Ahorcado</h1>
       <h2 data-testid="word">${palabraMostrar}</h2>
@@ -42,7 +55,7 @@ export function mountApp(juego: Ahorcado) {
 
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && input.value) {
-          const entrada = input.value; // Ya no estandarizamos acá arriba para no romper cadenas largas ni caracteres raros
+          const entrada = input.value;
 
           // CAPA DE CONTROL (AT6): Chequeamos si la letra ya se había intentado
           if (juego.esLetraRepetida(entrada)) {
@@ -61,3 +74,28 @@ export function mountApp(juego: Ahorcado) {
   // Ejecutamos el renderizado inicial de la interfaz 
   render();
 }
+
+// =========================================================================
+// INICIALIZACIÓN PRINCIPAL (Punto de entrada de Vite)
+// =========================================================================
+// 1. Leemos los parámetros de la URL usando la API del navegador
+const urlParams = new URLSearchParams(window.location.search);
+const wordsParam = urlParams.get("words");
+const seedParam = urlParams.get("seed");
+
+let instanciaJuego: Ahorcado;
+
+// 2. Aplicamos la costura (Seam) para decidir cómo crear el dominio
+if (wordsParam) {
+  const listaPalabras = wordsParam.split(",");
+  const indiceSemilla = seedParam !== null ? parseInt(seedParam, 10) : undefined;
+
+  // Le inyectamos la lista y la semilla al dominio
+  instanciaJuego = new Ahorcado(listaPalabras, indiceSemilla);
+} else {
+  // Inicialización por defecto para los demás ATs existentes
+  instanciaJuego = new Ahorcado("GATO");
+}
+
+// 3. Montamos la aplicación pasándole la instancia configurada
+mountApp(instanciaJuego);

@@ -143,3 +143,28 @@ describe("Ahorcado - Desafío Acentos y Ñ", () => {
     expect(juego.palabraEnmascarada()).toBe("_ _ Ñ _");
   });
 });
+describe("Ahorcado - Palabra al azar (Aprobación Directa)", () => {
+  it("debería seleccionar la primera palabra si se le pasa una lista y el índice 0", () => {
+    const lista = ["PERRO", "LAVADORA"];
+    const juego = new Ahorcado(lista, 0);
+
+    expect(juego.palabraSecreta()).toBe("PERRO");
+    // Agregamos los espacios correspondientes al formato del dominio
+    expect(juego.palabraEnmascarada()).toBe("_ _ _ _ _");
+  });
+
+  it("debería seleccionar la segunda palabra si el índice fijado es 1", () => {
+    const lista = ["PERRO", "LAVADORA"];
+    const juego = new Ahorcado(lista, 1);
+
+    expect(juego.palabraSecreta()).toBe("LAVADORA");
+  });
+
+  it("debería seleccionar una palabra usando el azar real si se pasa una lista pero no se define el índice", () => {
+    const lista = ["PERRO", "LAVADORA"];
+    const juego = new Ahorcado(lista); // No le pasamos el índice, forzamos el Math.random
+
+    // Como es un array de dos opciones, la palabra secreta tiene que ser alguna de las dos
+    expect(lista).toContain(juego.palabraSecreta());
+  });
+});
