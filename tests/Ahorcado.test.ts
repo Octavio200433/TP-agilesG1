@@ -121,3 +121,21 @@ describe("Ahorcado - Entrada inválida (AT 7)", () => {
     expect(juego.vidas()).toBe(vidasAlPerder);
   });
 });
+
+describe("Ahorcado - Palabra al azar (Aprobación Directa)", () => {
+  it("debería seleccionar la primera palabra si se le pasa una lista y el índice 0", () => {
+    const lista = ["PERRO", "LAVADORA"];
+    // Le pasamos la lista de palabras y fijamos el índice en 0 (nuestro Seam del azar)
+    const juego = new Ahorcado(lista, 0);
+
+    expect(juego.palabraSecreta()).toBe("PERRO");
+    expect(juego.palabraEnmascarada()).toBe("_____");
+  });
+
+  it("debería seleccionar la segunda palabra si el índice fijado es 1", () => {
+    const lista = ["PERRO", "LAVADORA"];
+    const juego = new Ahorcado(lista, 1);
+
+    expect(juego.palabraSecreta()).toBe("LAVADORA");
+  });
+});
