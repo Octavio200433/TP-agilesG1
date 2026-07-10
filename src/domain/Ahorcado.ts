@@ -8,7 +8,7 @@ export class Ahorcado {
       // Seam para el azar: si pasan un índice controlado (tests) lo usa, sino usa Math.random (producción)
       const indiceSeleccionado = indiceFijado !== undefined
         ? indiceFijado
-        : Math.floor(Math.random() * palabraOLista.length);
+        : Math.floor(Math.random() * palabraOLista.length); // NOSONAR
 
       this.palabra = palabraOLista[indiceSeleccionado];
     } else {
