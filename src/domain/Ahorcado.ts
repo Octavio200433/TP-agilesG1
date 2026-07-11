@@ -115,4 +115,10 @@ export class Ahorcado {
       l => this.normalizarTexto(l) === letraNormalizada
     );
   }
+
+  // 🎯 FUNCIONALIDAD AT9 (Desafío Promoción): Limpia el estado de la partida actual
+  reiniciar(): void {
+    this.letrasAdivinadas = [];
+    this.vidasActuales = 6;
+  }
 }
