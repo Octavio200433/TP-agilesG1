@@ -55,3 +55,11 @@ Then("la palabra oculta debería tener 5 guiones bajos", async function ({ page 
   await expect(wordLocator).toHaveText("_ _ _ _ _");
 });
 
+// Al final de features/steps/ahorcado.steps.ts
+Then("se ve el mensaje de estado {string}", async ({ page }, estado: string) => {
+  await expect(page.getByTestId("status")).toHaveText(estado);
+});
+
+When("el jugador presiona el botón {string}", async ({ page }, nombreBoton: string) => {
+  await page.getByRole("button", { name: nombreBoton }).click();
+});
