@@ -18,11 +18,9 @@ export function mountApp(juegoInicial: Ahorcado) {
   const app = document.querySelector<HTMLDivElement>('#app')!;
   let mensajeAlerta = "";
 
-
   const render = () => {
     let palabraMostrar = juego.palabraEnmascarada();
     let cartelStatus = '';
-
 
     if (juego.estaPerdido()) {
       palabraMostrar = juego.palabraSecreta(); // Revelamos la palabra completa si perdió (AT5)
@@ -42,32 +40,44 @@ export function mountApp(juegoInicial: Ahorcado) {
       
       ${mensajeAlerta ? `<div data-testid="warning" style="color: red; font-weight: bold; margin-bottom: 10px;">${mensajeAlerta}</div>` : ""}
       
-      ${cartelStatus} <input type="text" id="letra-input" placeholder="Letra" 
+      ${cartelStatus} 
+      <input type="text" id="letra-input" placeholder="Letra" 
                ${partidaTerminada ? 'disabled' : 'autofocus'} />
+      
+      <div id="contenedor-reiniciar" style="margin-top: 15px;">
+        ${partidaTerminada ? `<button id="btn-reiniciar" style="padding: 8px 16px; font-weight: bold; cursor: pointer;">Jugar de nuevo</button>` : ""}
+      </div>
     `;
 
-    // 3. Si la partida no terminó, asignamos el escuchador de eventos al input
+    // 3. Asignación de escuchadores de eventos según el estado
     if (!partidaTerminada) {
       const input = document.querySelector<HTMLInputElement>('#letra-input')!;
-
-      // Mantenemos el foco en el input de manera automática
       input.focus();
 
       input.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' && input.value) {
           const entrada = input.value;
 
-          // CAPA DE CONTROL (AT6): Chequeamos si la letra ya se había intentado
           if (juego.esLetraRepetida(entrada)) {
-            mensajeAlerta = "Ya intentaste con esa letra"; // Activamos el mensaje
+            mensajeAlerta = "Ya intentaste con esa letra";
           } else {
-            mensajeAlerta = ""; // Limpiamos la alerta si es una entrada nueva
-            juego.adivinar(entrada); // Invoca la lógica del dominio
+            mensajeAlerta = "";
+            juego.adivinar(entrada);
           }
 
-          render(); // Re-renderiza la pantalla con el nuevo estado
+          render();
         }
       });
+    } else {
+      // Nos aseguramos de enganchar bien el botón usando un selector directo y limpio
+      const btnReiniciar = document.querySelector<HTMLButtonElement>('#btn-reiniciar');
+      if (btnReiniciar) {
+        btnReiniciar.addEventListener('click', () => {
+          mensajeAlerta = "";
+          juego.reiniciar();
+          render();
+        });
+      }
     }
   };
 
@@ -78,24 +88,18 @@ export function mountApp(juegoInicial: Ahorcado) {
 // =========================================================================
 // INICIALIZACIÓN PRINCIPAL (Punto de entrada de Vite)
 // =========================================================================
-// 1. Leemos los parámetros de la URL usando la API del navegador
 const urlParams = new URLSearchParams(window.location.search);
 const wordsParam = urlParams.get("words");
 const seedParam = urlParams.get("seed");
 
 let instanciaJuego: Ahorcado;
 
-// 2. Aplicamos la costura (Seam) para decidir cómo crear el dominio
 if (wordsParam) {
   const listaPalabras = wordsParam.split(",");
   const indiceSemilla = seedParam !== null ? parseInt(seedParam, 10) : undefined;
-
-  // Le inyectamos la lista y la semilla al dominio
   instanciaJuego = new Ahorcado(listaPalabras, indiceSemilla);
 } else {
-  // Inicialización por defecto para los demás ATs existentes
   instanciaJuego = new Ahorcado("GATO");
 }
 
-// 3. Montamos la aplicación pasándole la instancia configurada
 mountApp(instanciaJuego);
