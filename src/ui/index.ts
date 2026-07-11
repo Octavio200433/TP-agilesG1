@@ -1,12 +1,27 @@
 import { Ahorcado } from "../domain/Ahorcado";
 import { mountApp } from "./main.ts";
 
-// 1. Capturamos la palabra de la URL (?word=GATO)
+// 1. Armamos nuestro diccionario de palabras reales para el juego normal
+const diccionario = [
+    "PERRO",
+    "GATO",
+    "AUTO",
+    "ELEFANTE",
+    "PROGRAMACION",
+    "FACULTAD",
+    "MURCIELAGO"
+];
+
+// 2. Capturamos el parámetro de la URL por si los tests anteriores lo necesitan (?word=...)
 const urlParams = new URLSearchParams(window.location.search);
-const palabraSecreta = urlParams.get("word") || "GATO"; // Si no viene, usa una por defecto
+const palabraFija = urlParams.get("word");
 
-// 2. Instanciamos el objeto real del dominio
-const juego = new Ahorcado(palabraSecreta);
+// 3. Si la URL exige una palabra fija (tests viejos), la usamos. 
+// Si la URL está limpia (jugador real), le mandamos el diccionario para que el azar haga su magia.
+const configuracionInicial = palabraFija ? palabraFija : diccionario;
 
-// 3. Montamos la interfaz pasándole el juego
+// 4. Instanciamos el objeto real del dominio
+const juego = new Ahorcado(configuracionInicial);
+
+// 5. Montamos la interfaz pasándole el juego
 mountApp(juego);
