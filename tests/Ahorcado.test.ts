@@ -168,3 +168,19 @@ describe("Ahorcado - Palabra al azar (Aprobación Directa)", () => {
     expect(lista).toContain(juego.palabraSecreta());
   });
 });
+
+it("permite reiniciar la partida restableciendo las vidas y los intentos", () => {
+  const juego = new Ahorcado("SOL");
+
+  // Simulamos una jugada para alterar el estado
+  juego.adivinar("X"); // Falla -> baja a 5 vidas
+  juego.adivinar("S"); // Acierta
+
+  // Ejecutamos la acción de reiniciar
+  juego.reiniciar();
+
+  // Verificamos que el estado volvió a cero
+  expect(juego.vidas()).toBe(6);
+  expect(juego.palabraEnmascarada()).toBe("_ _ _");
+  expect(juego.estaTerminado()).toBe(false);
+});
