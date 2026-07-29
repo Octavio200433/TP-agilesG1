@@ -36,7 +36,7 @@ body {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-align: center;
   width: 100%;
-  max-width: 650px;
+  max-width: 800px;
   box-sizing: border-box;
 }
 
@@ -51,15 +51,15 @@ h1 {
 }
 
 h2[data-testid="word"] {
-  font-size: 3.5rem;
+  font-size: 3rem; /* Reduje levemente el tamaño base para acomodar palabras más largas */
   letter-spacing: 0.4rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
   color: #ffffff;
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
 }
 
 .lives-container {
