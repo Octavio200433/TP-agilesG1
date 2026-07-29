@@ -24,9 +24,9 @@ export function mountApp(juegoInicial: Ahorcado) {
 
     if (juego.estaPerdido()) {
       palabraMostrar = juego.palabraSecreta(); // Revelamos la palabra completa si perdió (AT5)
-      cartelStatus = `<h3 data-testid="status">PERDISTE</h3>`;
+      cartelStatus = `<h3 data-testid="status" class="status-perdiste">PERDISTE</h3>`;
     } else if (juego.gano()) {
-      cartelStatus = `<h3 data-testid="status">GANASTE</h3>`; // (AT4)
+      cartelStatus = `<h3 data-testid="status" class="status-ganaste">GANASTE</h3>`; // (AT4)
     }
 
     // Evaluamos si la partida terminó usando el método del dominio (AT4/AT5)
@@ -36,16 +36,16 @@ export function mountApp(juegoInicial: Ahorcado) {
     app.innerHTML = `
       <h1>Juego del Ahorcado</h1>
       <h2 data-testid="word">${palabraMostrar}</h2>
-      <p>Vidas: <span data-testid="lives">${juego.vidas()}</span></p>
+      <p class="lives-container">Vidas restantes: <span data-testid="lives">${juego.vidas()}</span></p>
       
-      ${mensajeAlerta ? `<div data-testid="warning" style="color: red; font-weight: bold; margin-bottom: 10px;">${mensajeAlerta}</div>` : ""}
+      ${mensajeAlerta ? `<div data-testid="warning">${mensajeAlerta}</div>` : ""}
       
       ${cartelStatus} 
-      <input type="text" id="letra-input" placeholder="Letra" 
+      <input type="text" id="letra-input" placeholder="Ingresa una letra" autocomplete="off"
                ${partidaTerminada ? 'disabled' : 'autofocus'} />
       
-      <div id="contenedor-reiniciar" style="margin-top: 15px;">
-        ${partidaTerminada ? `<button id="btn-reiniciar" style="padding: 8px 16px; font-weight: bold; cursor: pointer;">Jugar de nuevo</button>` : ""}
+      <div id="contenedor-reiniciar">
+        ${partidaTerminada ? `<button id="btn-reiniciar">Jugar de nuevo</button>` : ""}
       </div>
     `;
 

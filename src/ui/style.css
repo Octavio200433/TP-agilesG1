@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap');
+
+:root {
+  --bg-color: #0f172a;
+  --card-bg: rgba(30, 41, 59, 0.6);
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
+  --accent-glow: rgba(139, 92, 246, 0.5);
+  --border: rgba(255, 255, 255, 0.1);
+  --error: #f43f5e;
+  --error-bg: rgba(244, 63, 94, 0.1);
+  --success: #10b981;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Outfit', sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+#app {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 3.5rem 4rem;
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 650px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+h2[data-testid="word"] {
+  font-size: 3.5rem;
+  letter-spacing: 0.4rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lives-container {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: var(--text-secondary);
+}
+
+span[data-testid="lives"] {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 1.6rem;
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+div[data-testid="warning"] {
+  color: var(--error);
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: var(--error-bg);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+  padding: 0.85rem;
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+h3[data-testid="status"] {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
+
+.status-ganaste {
+  color: var(--success);
+  text-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+.status-perdiste {
+  color: var(--error);
+  text-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+}
+
+#letra-input {
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.5rem;
+  text-align: center;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  color: var(--text-primary);
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+#letra-input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+#letra-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+#letra-input:disabled {
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+#btn-reiniciar {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  color: white;
+  border: none;
+  padding: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px var(--accent-glow);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#btn-reiniciar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(139, 92, 246, 0.6);
+}
+
+#btn-reiniciar:active {
+  transform: translateY(1px);
+}
